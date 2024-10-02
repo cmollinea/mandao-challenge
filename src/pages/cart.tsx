@@ -1,19 +1,21 @@
-import { Container, Row } from 'react-bootstrap';
-import { ProductInCartCard } from '../components/product-in-cart-card';
-import { useAppSelector } from '../hooks';
+import { Col, Row } from "react-bootstrap";
+import { ProductInCartCard } from "../components/product-in-cart-card";
+import { useAppSelector } from "../hooks";
 
 export const Cart = () => {
   const { productsInCart } = useAppSelector((state) => state.cart);
+
+  console.log(productsInCart);
 
   const totalPrice = productsInCart.reduce((total, product) => {
     return total + product.price * product.quantity;
   }, 0);
 
   return (
-    <Container fluid='sm' className='p-4'>
-      <Row className='gap-2 w-100 bg-body-tertiary'>
+    <Col className="d-flex flex-column align-items-center">
+      <Row className="gap-2 p-0 bg-body-tertiary">
         {productsInCart?.map(({ id, quantity, title, image, price }) => (
-          <Row key={id}>
+          <Row key={id} className="mx-auto">
             <ProductInCartCard
               id={id}
               quantity={quantity}
@@ -24,16 +26,32 @@ export const Cart = () => {
           </Row>
         ))}
       </Row>
-      <Row className='bg-secondary'>
-        <div className='d-flex justify-content-between'>
-          <div>
+      <Row
+        style={{ background: "#e5e7eb" }}
+        className="col-lg-6 mt-2 py-5 px-2"
+      >
+        <Row className=" justify-content-between align-content-between">
+          {productsInCart.map((product) => (
+            <Row key={product.id}>
+              <Col>
+                <p>{product.title}</p>
+              </Col>
+              <Col className="text-end fw-bold text-success">
+                <p>${(product.price * product.quantity).toFixed(2)}</p>
+              </Col>
+            </Row>
+          ))}
+        </Row>
+        <hr />
+        <Row className="align-content-center fw-bolder">
+          <Col>
             <p>Total Price</p>
-          </div>
-          <div>
-            <p>{totalPrice.toFixed(2)}</p>
-          </div>
-        </div>
+          </Col>
+          <Col className="fw-bolder text-end text-success-emphasis display-6">
+            <p>${totalPrice.toFixed(2)}</p>
+          </Col>
+        </Row>
       </Row>
-    </Container>
+    </Col>
   );
 };

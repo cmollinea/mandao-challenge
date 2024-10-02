@@ -1,37 +1,41 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { IProductSlice } from '../types';
-import { fakeStoreInstance } from '../services';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { fakeStoreInstance } from "../services";
+import { IProductSlice } from "../types";
 
 const initialState: IProductSlice = {
-  status: 'idle',
-  products: []
+  status: "idle",
+  products: [],
 };
 
 const productSlice = createSlice({
-  name: 'count',
+  name: "count",
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getProducts.pending, (state) => {
-        state.status = 'pending';
+        state.status = "pending";
       })
-      .addCase(getProducts.rejected, (state) => {
-        state.status = 'error';
+      .addCase(getProducts.rejected, (state, action) => {
+        state.status = "error";
+        state.error = {
+          code: action.error.code,
+          message: action.error.message ?? "Something Just Explode",
+        };
       })
       .addCase(getProducts.fulfilled, (state, action) => {
-        state.status = 'success';
+        state.status = "success";
         state.products = action.payload;
       });
-  }
+  },
 });
 
 export const getProducts = createAsyncThunk(
-  'get/product',
+  "get/product",
   async (url?: string) => {
-    const data = (await fakeStoreInstance.get(url ?? '/')).data;
-    return data;
-  }
+    const res = await fakeStoreInstance.get(url ?? "/");
+    return res.data;
+  },
 );
 
 export default productSlice.reducer;

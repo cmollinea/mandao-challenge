@@ -5,12 +5,16 @@ export interface Product {
   category: string;
   description: string;
   image: string;
+  rating: {
+    rate?: number;
+    count?: number;
+  };
 }
 
-export type Status = 'idle' | 'pending' | 'success' | 'error';
+export type Status = "idle" | "pending" | "success" | "error";
 
 export interface ICartProduct
-  extends Pick<Product, 'id' | 'price' | 'title' | 'image'> {
+  extends Pick<Product, "id" | "price" | "title" | "image"> {
   quantity: number;
 }
 
@@ -19,15 +23,15 @@ export interface ICart {
 }
 
 type Categories =
-  | 'electronics'
-  | 'jewelery'
+  | "electronics"
+  | "jewelery"
   | "men's clothing"
   | "women's clothing"
-  | 'all';
+  | "all";
 
 export interface ICategorySlice {
   categories: Categories[];
-  status: 'idle' | 'success' | 'error' | 'pending';
+  status: "idle" | "success" | "error" | "pending";
 }
 
 export interface IDetails {
@@ -38,4 +42,10 @@ export interface IDetails {
 export interface IProductSlice {
   status: Status;
   products: Product[];
+  error?: AppError;
+}
+
+export interface AppError {
+  code?: string;
+  message: string;
 }

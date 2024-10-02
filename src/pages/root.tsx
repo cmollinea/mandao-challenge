@@ -6,7 +6,7 @@ export const Root = () => {
   return (
     <Container className='bg-body min-vh-100' fluid>
       <OwnNavbar />
-      <Container className='py-5'>
+      <Container fluid className='py-5  align-items-center d-flex flex-column'>
         <Outlet />
       </Container>
     </Container>

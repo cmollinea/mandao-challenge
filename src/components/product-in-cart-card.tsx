@@ -4,46 +4,49 @@ import {
   CardSubtitle,
   Col,
   Container,
-  Row
-} from 'react-bootstrap';
-import {
-  CartProduct,
-  incrementProduct,
-  reduceProduct
-} from '../slices/cart-slice';
-import { useDispatch } from 'react-redux';
+  Row,
+} from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { incrementProduct, reduceProduct } from "../slices/cart-slice";
+import { ICartProduct } from "../types";
+import { ConfirmModal } from "./confirm-modal";
 
 export const ProductInCartCard = ({
   title,
   price,
   quantity,
   image,
-  id
-}: CartProduct) => {
+  id,
+}: ICartProduct) => {
   const dispatch = useDispatch();
   return (
-    <Card className=' shadow-sm p-4'>
-      <Row className=' align-items-center'>
-        <Col className=' flex-grow-0 w-25'>
+    <Card className=" shadow-sm p-4 mx-auto col-lg-6">
+      <Row className=" align-items-center">
+        <Col className=" flex-grow-0 w-25">
           <Card.Img
             height={500}
             width={500}
-            style={{ height: '4rem', width: '4rem' }}
-            className='object-fit-sm-contain'
-            variant='top'
+            style={{ height: "4rem", width: "4rem" }}
+            className="object-fit-sm-contain"
+            variant="top"
             src={image}
           />
         </Col>
-        <Col className=' flex-grow-1 align-self-start'>
-          <Card.Body className='d-flex flex-column justify-content-between '>
+        <Col className=" flex-grow-1 align-self-start">
+          <Card.Body className="d-flex flex-column justify-content-between ">
             <Container>
-              <Card.Title>{title}</Card.Title>
+              <Card.Title>
+                <Link unstable_viewTransition to={`/product/${id}`}>
+                  {title}
+                </Link>
+              </Card.Title>
               <CardSubtitle>{price}</CardSubtitle>
             </Container>
           </Card.Body>
         </Col>
 
-        <Row className='pt-4 w-auto'>
+        <Row className="pt-4 w-auto">
           <Col>
             <Button
               disabled={quantity <= 1}
@@ -62,6 +65,8 @@ export const ProductInCartCard = ({
           </Col>
         </Row>
       </Row>
+
+      <ConfirmModal id={id} />
     </Card>
   );
 };
