@@ -29,17 +29,21 @@ export const Pagination = ({ totalPages }: { totalPages: number }) => {
     arr.push(i + 1);
   }
   return (
-    <ButtonGroup aria-label="Basic example">
-      {arr.map((btn) => (
-        <Button
-          key={btn}
-          onClick={() => handlePagination(btn)}
-          disabled={page === btn}
-          style={{ width: "4rem" }}
-        >
-          {btn}
-        </Button>
-      ))}
-    </ButtonGroup>
+    <>
+      {totalPages > 0 && (
+        <ButtonGroup aria-label="Basic example">
+          {arr.map((btn) => (
+            <Button
+              key={btn}
+              onClick={() => handlePagination(btn)}
+              disabled={page === btn}
+              style={{ width: "4rem" }}
+            >
+              {btn}
+            </Button>
+          ))}
+        </ButtonGroup>
+      )}
+    </>
   );
 };

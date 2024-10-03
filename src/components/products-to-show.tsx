@@ -24,12 +24,8 @@ export const ProductsToShow = ({
 }: Props) => {
   const { productsInCart } = useAppSelector((state) => state.cart);
 
-  if (status === "success" && products.length === 0) {
-    return <NoItemsFounded />;
-  }
-
   return (
-    <Col className="justify-content-center align-items-center flex-column gap-5 d-flex">
+    <Col className=" align-items-center flex-column gap-5 d-flex">
       <Row>
         {status === "pending" ? (
           <PaginationSkeleton />
@@ -42,6 +38,10 @@ export const ProductsToShow = ({
         {status === "pending" ? (
           <ProductsGridContainer>
             <ProductsSkeletons />
+          </ProductsGridContainer>
+        ) : status === "success" && products.length === 0 ? (
+          <ProductsGridContainer>
+            <NoItemsFounded />
           </ProductsGridContainer>
         ) : status === "success" ? (
           <ProductsGridContainer>

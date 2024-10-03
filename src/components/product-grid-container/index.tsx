@@ -4,5 +4,9 @@ export const ProductsGridContainer = ({
 }: {
   children: React.ReactNode;
 }) => {
-  return <div className="grid-container col-12">{children}</div>;
+  return (
+    <div className="grid-container justify-content-center justify-content-md-start col-12">
+      {children}
+    </div>
+  );
 };

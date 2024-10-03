@@ -44,7 +44,7 @@ export const useProducts = () => {
   return {
     products: filteredProducts,
     totalResults: productsRef.current.length,
-    totalPages,
+    totalPages: productsRef.current.length / 5,
     status,
     error,
   };
