@@ -52,8 +52,12 @@ export const ProductDetails = () => {
         {details && (
           <Row className=" gap-5">
             {" "}
-            <Col className="col-lg-3 col-5">
-              <img className="col-12" src={details?.image} />
+            <Col className="col-12 col-lg-3 ">
+              <img
+                style={{ height: "20rem" }}
+                className="col-8 col-sm-5 col-md-4 col-lg-10"
+                src={details?.image}
+              />
               <div className="mt-5">
                 <Badge bg="success">{details.category}</Badge>
               </div>
