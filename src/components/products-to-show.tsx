@@ -40,9 +40,7 @@ export const ProductsToShow = ({
             <ProductsSkeletons />
           </ProductsGridContainer>
         ) : status === "success" && products.length === 0 ? (
-          <ProductsGridContainer>
-            <NoItemsFounded />
-          </ProductsGridContainer>
+          <NoItemsFounded />
         ) : status === "success" ? (
           <ProductsGridContainer>
             {products?.map(({ id, title, image, price }) => {
