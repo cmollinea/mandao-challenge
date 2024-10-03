@@ -1,12 +1,14 @@
 import { useEffect } from "react";
 import { Badge, Button, Col, Container, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
+import { DetailsSkeleton } from "../components/details-skeleton";
+import { Error } from "../components/error";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { addToCart } from "../slices/cart-slice";
 import { getDetails, reset } from "../slices/details-slice";
 
 export const ProductDetails = () => {
-  const { details } = useAppSelector((state) => state.details);
+  const { details, status, error } = useAppSelector((state) => state.details);
   const { productsInCart } = useAppSelector((state) => state.cart);
 
   const dispatch = useAppDispatch();
@@ -16,7 +18,14 @@ export const ProductDetails = () => {
 
   const handleAddtoCart = () => {
     if (details) {
-      dispatch(addToCart({ id: details?.id }));
+      dispatch(
+        addToCart({
+          id: details.id,
+          title: details.title,
+          price: details.price,
+          image: details.image,
+        }),
+      );
     }
   };
 
@@ -27,12 +36,20 @@ export const ProductDetails = () => {
     };
   }, [dispatch, params.id]);
 
+  if (status === "pending") {
+    return <DetailsSkeleton />;
+  }
+
+  if (error || status === "error") {
+    return <Error code={error?.code} message={error?.message} />;
+  }
+
   return (
     <Container className="py-5">
       {details && (
         <Row className=" gap-5">
           {" "}
-          <Col className="col-3">
+          <Col className="col-lg-3 col-5">
             <img className="col-12" src={details?.image} />
             <div className="mt-5">
               <Badge bg="success">{details.category}</Badge>
@@ -52,20 +69,20 @@ export const ProductDetails = () => {
                 />
               </svg>
               <small>
-                {details.rating.rate} ({details.rating.count} votes)
+                {details.rating.rate} out of 5 ({details.rating.count} votes)
               </small>
             </div>
           </Col>
-          <Col className="col-8">
-            <h1 className=" text-success">${details?.price}</h1>
-            <h2>{details?.title}</h2>
+          <Col className="col-12 col-lg-8">
+            <h1 className="display-5 text-success">${details?.price}</h1>
+            <h3 className="display-6">{details?.title}</h3>
             <p>{details?.description}</p>
 
             <Button
               variant={isInCart ? "success" : "primary"}
               onClick={handleAddtoCart}
               disabled={isInCart}
-              className="d-flex align-items-center justify-content-center gap-1 mt-5 col-4"
+              className="d-flex align-items-center justify-content-center gap-1 mt-5 col-6 col-lg-4"
             >
               {isInCart ? (
                 <>

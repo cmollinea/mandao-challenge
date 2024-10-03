@@ -37,6 +37,7 @@ export interface ICategorySlice {
 export interface IDetails {
   status: Status;
   details?: Product;
+  error?: AppError;
 }
 
 export interface IProductSlice {

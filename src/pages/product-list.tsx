@@ -1,17 +1,18 @@
-import { Col } from "react-bootstrap";
+import { Col, Spinner } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import { CategorySelect } from "../components/category-select";
 import { ClearFiltersButton } from "../components/clear-filters";
 import { Error } from "../components/error";
+import { NoItemsFounded } from "../components/no-items-founded";
 import { Pagination } from "../components/pagination";
 import { PaginationSkeleton } from "../components/pagination-skeleton";
 import ProductCard from "../components/product-card";
+import { ProductsGridContainer } from "../components/product-grid-container";
 import { ProductsSkeletons } from "../components/products-skeleton";
 import { SearchForm } from "../components/search-form";
 import { useAppSelector } from "../hooks";
 import { useProducts } from "../hooks/use-products";
-import "./product-list.css";
 
 export const ProductsList = () => {
   const { productsInCart } = useAppSelector((state) => state.cart);
@@ -47,7 +48,15 @@ export const ProductsList = () => {
               <ClearFiltersButton />
             </Row>
 
-            <small>{totalResults} result(s)</small>
+            {status === "pending" ? (
+              <Row className="col-12">
+                <div className="d-flex gap-1 align-items-center">
+                  <Spinner size="sm" /> <small>Loading results...</small>
+                </div>
+              </Row>
+            ) : (
+              <small>{totalResults} result(s)</small>
+            )}
           </Col>
           <Col className="justify-content-center align-items-center flex-column gap-5 d-flex">
             <Row>
@@ -58,11 +67,14 @@ export const ProductsList = () => {
               )}
             </Row>
             <Row className="w-100 flex-column">
-              <div className="grid-container col-12">
-                {status === "pending" ? (
+              {status === "pending" ? (
+                <ProductsGridContainer>
                   <ProductsSkeletons />
-                ) : products.length > 0 ? (
-                  products?.map(({ id, title, image, price }) => {
+                </ProductsGridContainer>
+              ) : products.length > 0 ? (
+                <ProductsGridContainer>
+                  {" "}
+                  {products?.map(({ id, title, image, price }) => {
                     const isInCart = productsInCart.some(
                       (productInCart) => productInCart.id === id,
                     );
@@ -76,11 +88,11 @@ export const ProductsList = () => {
                         id={id}
                       />
                     );
-                  })
-                ) : (
-                  <p>There is no products to show </p>
-                )}
-              </div>
+                  })}
+                </ProductsGridContainer>
+              ) : (
+                <NoItemsFounded />
+              )}
             </Row>
           </Col>
         </Row>

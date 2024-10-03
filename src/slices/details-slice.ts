@@ -2,6 +2,15 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { fakeStoreInstance } from "../services";
 import { IDetails } from "../types";
 
+class FakeApiProductNotFound extends Error {
+  code: string;
+  constructor(code: string, message: string) {
+    super(message);
+    this.code = code;
+    this.message = message;
+  }
+}
+
 const initialState: IDetails = {
   status: "idle",
 };
@@ -17,8 +26,12 @@ const DetailsSlice = createSlice({
       .addCase(getDetails.pending, (state) => {
         state.status = "pending";
       })
-      .addCase(getDetails.rejected, (state) => {
+      .addCase(getDetails.rejected, (state, action) => {
         state.status = "error";
+        state.error = {
+          code: action.error.code,
+          message: action.error.message ?? "Something Just Explode",
+        };
       })
       .addCase(getDetails.fulfilled, (state, action) => {
         state.status = "success";
@@ -30,8 +43,11 @@ const DetailsSlice = createSlice({
 export const getDetails = createAsyncThunk(
   "get/details",
   async (id?: string) => {
-    const data = (await fakeStoreInstance.get(`/products/${id}`)).data;
-    return data;
+    const res = await fakeStoreInstance.get(`/products/${id}`);
+    if (!res.data) {
+      throw new FakeApiProductNotFound("NOT_FOUND", "Product Not Found");
+    }
+    return res.data;
   },
 );
 

@@ -37,7 +37,7 @@ function ProductCard({ title, price, id, image, isInCart }: Props) {
           <CardSubtitle>
             <h4>${price}</h4>
           </CardSubtitle>
-          <Link unstable_viewTransition to={`/product/${id}`}>
+          <Link unstable_viewTransition to={`/products/${id}`}>
             <Card.Title>
               <h5>{title}</h5>
             </Card.Title>

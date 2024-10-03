@@ -21,8 +21,8 @@ export const ProductInCartCard = ({
 }: ICartProduct) => {
   const dispatch = useDispatch();
   return (
-    <Card className=" shadow-sm p-4 mx-auto col-lg-6">
-      <Row className=" align-items-center">
+    <Card className="shadow-sm p-4 mx-auto col-lg-6 text-center text-sm-start">
+      <Row className=" flex-column flex-sm-row align-items-center">
         <Col className=" flex-grow-0 w-25">
           <Card.Img
             height={500}
@@ -37,33 +37,35 @@ export const ProductInCartCard = ({
           <Card.Body className="d-flex flex-column justify-content-between ">
             <Container>
               <Card.Title>
-                <Link unstable_viewTransition to={`/product/${id}`}>
+                <Link unstable_viewTransition to={`/products/${id}`}>
                   {title}
                 </Link>
               </Card.Title>
-              <CardSubtitle>{price}</CardSubtitle>
+              <CardSubtitle className="text-success">${price}</CardSubtitle>
             </Container>
           </Card.Body>
         </Col>
 
-        <Row className="pt-4 w-auto">
-          <Col>
-            <Button
-              disabled={quantity <= 1}
-              onClick={() => dispatch(reduceProduct({ id }))}
-            >
-              -
-            </Button>
-          </Col>
-          <Col>
-            <p>{quantity}</p>
-          </Col>
-          <Col>
-            <Button onClick={() => dispatch(incrementProduct({ id }))}>
-              +
-            </Button>
-          </Col>
-        </Row>
+        <Col className="pt-4 col-lg-6">
+          <Row className=" justify-content-center justify-sm-content-end">
+            <Col className=" flex-grow-0">
+              <Button
+                disabled={quantity <= 1}
+                onClick={() => dispatch(reduceProduct({ id }))}
+              >
+                -
+              </Button>
+            </Col>
+            <Col className=" flex-grow-0">
+              <p>{quantity}</p>
+            </Col>
+            <Col className=" flex-grow-0">
+              <Button onClick={() => dispatch(incrementProduct({ id }))}>
+                +
+              </Button>
+            </Col>
+          </Row>
+        </Col>
       </Row>
 
       <ConfirmModal id={id} />

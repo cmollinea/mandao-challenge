@@ -1,17 +1,21 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 export const SearchForm = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [title, setTitle] = useState("");
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
 
   const navigate = useNavigate();
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    searchParams.set("title", title);
-    searchParams.set("page", "1");
+    setSearchParams((search) => {
+      search.set("title", title);
+      search.set("page", "1");
+      return search;
+    });
+
     console.log(searchParams.toString());
 
     navigate({
@@ -23,6 +27,7 @@ export const SearchForm = () => {
   return (
     <Form className="w-100 d-flex p-0 gap-1" onSubmit={handleSubmit}>
       <Form.Control
+        value={title}
         onChange={(e) => setTitle(e.target.value)}
         type="search"
         placeholder="Search"

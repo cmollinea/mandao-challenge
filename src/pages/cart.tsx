@@ -1,9 +1,14 @@
-import { Col, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
+import { EmptyCart } from "../components/empty-cart";
 import { ProductInCartCard } from "../components/product-in-cart-card";
 import { useAppSelector } from "../hooks";
 
 export const Cart = () => {
   const { productsInCart } = useAppSelector((state) => state.cart);
+
+  if (!productsInCart.length) {
+    return <EmptyCart />;
+  }
 
   console.log(productsInCart);
 
@@ -12,8 +17,8 @@ export const Cart = () => {
   }, 0);
 
   return (
-    <Col className="d-flex flex-column align-items-center">
-      <Row className="gap-2 p-0 bg-body-tertiary">
+    <Container fluid className="d-flex flex-column align-items-center">
+      <Row className="gap-2 col-12 p-0 ">
         {productsInCart?.map(({ id, quantity, title, image, price }) => (
           <Row key={id} className="mx-auto">
             <ProductInCartCard
@@ -26,10 +31,7 @@ export const Cart = () => {
           </Row>
         ))}
       </Row>
-      <Row
-        style={{ background: "#e5e7eb" }}
-        className="col-lg-6 mt-2 py-5 px-2"
-      >
+      <Row className="col-lg-6 mt-2 py-5 px-2 bg-body-tertiary">
         <Row className=" justify-content-between align-content-between">
           {productsInCart.map((product) => (
             <Row key={product.id}>
@@ -52,6 +54,6 @@ export const Cart = () => {
           </Col>
         </Row>
       </Row>
-    </Col>
+    </Container>
   );
 };
