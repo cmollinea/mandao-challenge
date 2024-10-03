@@ -10,7 +10,7 @@ export const Root = () => {
         <OwnNavbar />
         <Container
           fluid
-          className="py-5  align-items-center d-flex flex-column"
+          className="py-5 position-relative align-items-center d-flex flex-column"
         >
           <Outlet />
         </Container>

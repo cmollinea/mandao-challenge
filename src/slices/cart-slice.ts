@@ -15,7 +15,7 @@ export const CartSlice = createSlice({
     addToCart(state, action) {
       const product = { ...action.payload, quantity: 1 };
       state.productsInCart.push(product);
-      toast.success("Product added to cart");
+      toast.success(`${action.payload.title} added to cart`);
       localStorage.setItem("cart", JSON.stringify(state.productsInCart));
     },
     removeFromCart(state, action) {

@@ -28,7 +28,7 @@ function ProductCard({ title, price, id, image, isInCart }: Props) {
         height={500}
         width={500}
         style={{ height: "15rem" }}
-        className="object-fit-sm-contain w-auto"
+        className=" object-fit-contain"
         variant="top"
         src={image}
       />

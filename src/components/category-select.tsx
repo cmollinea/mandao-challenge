@@ -19,7 +19,7 @@ export function CategorySelect() {
             }}
           />
         </>
-      ) : categories ? (
+      ) : categories.length > 0 ? (
         <Form.Select
           defaultValue={searchedCategory}
           onChange={(e) => handleSelectCategory(e.target.value)}
